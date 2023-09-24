@@ -28,7 +28,7 @@ function prettyImports(text: string): string {
                         } else {
                             if (preImport.length + 7 + postImport.length > MAX_LINE_LENGTH) {
                                 const slashIndex = preImport.length + 7;
-                                const paddingLength = slashIndex - postImport.length + 2;
+                                const paddingLength = slashIndex - postImport.length + 1; // Adjusted padding length
                                 projectSpecificImports.push(`${preImport} import \\ \n${' '.repeat(paddingLength)}${postImport}`);
                             } else {
                                 projectSpecificImports.push(`${preImport} import ${postImport}`);
@@ -49,7 +49,11 @@ function prettyImports(text: string): string {
     externalPackageImports.sort((a, b) => a.length - b.length);
     projectSpecificImports.sort((a, b) => a.split('\n')[0].length - b.split('\n')[0].length);
 
-    return [...directImports, '', ...externalPackageImports, '', ...projectSpecificImports, '', ...nonHandled].join('\n');
+    let resultString = [...directImports, '', ...externalPackageImports, '', ...projectSpecificImports, '', ...nonHandled].join('\n');
+    // Removing the space character in front of every `\` character
+    resultString = resultString.replace(/ \\ \n/g, ' \\\n');
+    
+    return resultString;
 }
 
 import * as vscode from 'vscode';

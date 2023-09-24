@@ -50,5 +50,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/ChanrajMandok/pretty_imports_vsc_extension.git"
-  }
+  },
+"publisher": "ChanrajMandok"
 }
