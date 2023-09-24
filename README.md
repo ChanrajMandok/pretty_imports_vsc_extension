@@ -1,5 +1,11 @@
 # Pretty Imports - Visual Studio Code Extension
 
+## Live on Microsoft Store
+
+**Extension URL**: https://marketplace.visualstudio.com/items?itemName=ChanrajMandok.pretty-imports
+
+**Hub URL**: https://marketplace.visualstudio.com/manage/publishers/ChanrajMandok/extensions/pretty-imports/hub
+
 ## Description
 
 **Pretty Imports** is a Visual Studio Code Extension designed to beautify and organize Python import statements, ensuring they are in accordance with PEP 8 standards. It aims to make your Python code more readable, maintainable, and aesthetically pleasing by providing a clean and organized representation of import statements.
@@ -39,11 +45,11 @@ from my_project import my_module
 from my_project.my_module import my_function
 from my_project.sub_module import another_function
 from my_project.my_module.sub_module.long_service_name import \
-                                               LongServiceName
+                                                 LongServiceName
 from my_project.my_module.sub_module.another_long_service_name import \
-                                               AnotherLongServiceName
+                                                 AnotherLongServiceName
 from my_project.my_module.sub_module.yet_another_long_service_name import \
-                                               YetAnotherLongServiceName
+                                                  YetAnotherLongServiceName
 
 # Non-conforming or non-handled lines here.
 Something not an import
