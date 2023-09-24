@@ -2,7 +2,7 @@
   "name": "pretty-imports",
   "displayName": "pretty_imports",
   "description": "extension which takes imports and organises them into pep8 style with clean visual style",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "engines": {
     "vscode": "^1.82.0"
   },

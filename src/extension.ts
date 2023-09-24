@@ -12,14 +12,14 @@ function prettyImports(text: string): string {
                 const preImport = line.substring(0, importIndex).trim();
                 const postImport = line.substring(importIndex + 7).trim();
 
-                if (preImport === '') { // Direct import
+                if (preImport === '') { 
                     directImports.push(`import ${postImport}`);
                 } else if (preImport.startsWith('from')) {
                     const splitPreImport = preImport.split(' ');
 
                     if (splitPreImport.length === 2 && !splitPreImport[1].includes('.')) {
-                        externalPackageImports.push(line); // External package import
-                    } else { // Project-specific import
+                        externalPackageImports.push(line); 
+                    } else { 
                         if (postImport.startsWith('(') && postImport.endsWith(')')) {
                             const importsInParentheses = postImport.slice(1, -1).split(',').map(str => str.trim());
                             importsInParentheses.forEach(imp => {
@@ -28,7 +28,7 @@ function prettyImports(text: string): string {
                         } else {
                             if (preImport.length + 7 + postImport.length > MAX_LINE_LENGTH) {
                                 const slashIndex = preImport.length + 7;
-                                const paddingLength = slashIndex - postImport.length + 1; // Adjusted padding length
+                                const paddingLength = slashIndex - postImport.length + 1; 
                                 projectSpecificImports.push(`${preImport} import \\ \n${' '.repeat(paddingLength)}${postImport}`);
                             } else {
                                 projectSpecificImports.push(`${preImport} import ${postImport}`);
@@ -49,12 +49,16 @@ function prettyImports(text: string): string {
     externalPackageImports.sort((a, b) => a.length - b.length);
     projectSpecificImports.sort((a, b) => a.split('\n')[0].length - b.split('\n')[0].length);
 
-    let resultString = [...directImports, '', ...externalPackageImports, '', ...projectSpecificImports, '', ...nonHandled].join('\n');
-    // Removing the space character in front of every `\` character
+    const groupedImports = [directImports, externalPackageImports, projectSpecificImports, nonHandled]
+        .map(group => group.join('\n'))
+        .filter(group => group.trim() !== ''); 
+
+    let resultString = groupedImports.join('\n\n');
     resultString = resultString.replace(/ \\ \n/g, ' \\\n');
     
     return resultString;
 }
+
 
 import * as vscode from 'vscode';
 
