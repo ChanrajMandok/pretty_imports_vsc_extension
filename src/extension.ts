@@ -5,21 +5,38 @@ function prettyImports(text: string): string {
     const projectSpecificImports: string[] = [];
     const nonHandled: string[] = [];
 
-    text.split('\n').forEach(line => {
+    // Pre-process the text to handle lines starting with import and preceded by '\'
+    const rawLines = text.split('\n');
+    const preProcessedLines: string[] = [];
+    let lastProcessedIndex = -1; // To keep track of the index of the last line added to preProcessedLines
+
+    rawLines.forEach((line, index) => {
+        if(index > 0 && /\s*\\\s*$/.test(preProcessedLines[lastProcessedIndex])) {
+            // Merge the current line with the previous line and remove unnecessary whitespaces and indentation
+            let previousLine = preProcessedLines[lastProcessedIndex].trim().replace(/\s*\\\s*$/, '').trim(); 
+            preProcessedLines[lastProcessedIndex] = `${previousLine} ${line.trim()}`;
+        } else {
+            preProcessedLines.push(line);
+            lastProcessedIndex++; // Update the lastProcessedIndex whenever a new line is added to preProcessedLines
+        }
+    });
+
+    // Process each line for pretty import
+    preProcessedLines.forEach((line) => {
         try {
             if (line.includes('import')) {
                 const importIndex = line.lastIndexOf('import');
                 const preImport = line.substring(0, importIndex).trim();
                 const postImport = line.substring(importIndex + 7).trim();
 
-                if (preImport === '') { 
+                if (preImport === '') {
                     directImports.push(`import ${postImport}`);
                 } else if (preImport.startsWith('from')) {
                     const splitPreImport = preImport.split(' ');
 
                     if (splitPreImport.length === 2 && !splitPreImport[1].includes('.')) {
-                        externalPackageImports.push(line); 
-                    } else { 
+                        externalPackageImports.push(line);
+                    } else {
                         if (postImport.startsWith('(') && postImport.endsWith(')')) {
                             const importsInParentheses = postImport.slice(1, -1).split(',').map(str => str.trim());
                             importsInParentheses.forEach(imp => {
@@ -28,7 +45,7 @@ function prettyImports(text: string): string {
                         } else {
                             if (preImport.length + 7 + postImport.length > MAX_LINE_LENGTH) {
                                 const slashIndex = preImport.length + 7;
-                                const paddingLength = slashIndex - postImport.length + 1; 
+                                const paddingLength = slashIndex - postImport.length + 2;
                                 projectSpecificImports.push(`${preImport} import \\ \n${' '.repeat(paddingLength)}${postImport}`);
                             } else {
                                 projectSpecificImports.push(`${preImport} import ${postImport}`);
@@ -51,14 +68,13 @@ function prettyImports(text: string): string {
 
     const groupedImports = [directImports, externalPackageImports, projectSpecificImports, nonHandled]
         .map(group => group.join('\n'))
-        .filter(group => group.trim() !== ''); 
+        .filter(group => group.trim() !== '');
 
     let resultString = groupedImports.join('\n\n');
     resultString = resultString.replace(/ \\ \n/g, ' \\\n');
-    
+
     return resultString;
 }
-
 
 import * as vscode from 'vscode';
 
