@@ -49,7 +49,7 @@ from my_project.my_module.sub_module.long_service_name import \
 from my_project.my_module.sub_module.another_long_service_name import \
                                                  AnotherLongServiceName
 from my_project.my_module.sub_module.yet_another_long_service_name import \
-                                                 YetAnotherLongServiceName
+                                                  YetAnotherLongServiceName
 
 # Non-conforming or non-handled lines here.
 Something not an import
