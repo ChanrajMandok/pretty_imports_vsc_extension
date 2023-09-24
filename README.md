@@ -3,6 +3,7 @@
 ## Live on Microsoft Store
 
 **Extension URL**: https://marketplace.visualstudio.com/items?itemName=ChanrajMandok.pretty-imports
+
 **Hub URL**: https://marketplace.visualstudio.com/manage/publishers/ChanrajMandok/extensions/pretty-imports/hub
 
 ## Description
